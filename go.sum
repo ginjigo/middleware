@@ -1,0 +1,4 @@
+github.com/ginjigo/ginji v0.3.1 h1:tp6FYV2QugqwHxKSV+ozx6cKt/pNbZ67BMsIHp5gllU=
+github.com/ginjigo/ginji v0.3.1/go.mod h1:fo4dNTqMiiIbxoQdC1yOXRDs2cjUuhRloEOec8WdH3w=
+github.com/ginjigo/schema v0.0.1 h1:eeKBgVoK8IgK2RTQswj/F92SWWzOhuZoktF+uZlwtWI=
+github.com/ginjigo/schema v0.0.1/go.mod h1:HGqtQ39lhxgMOlkwnUNAxRKmZgttlbwXFPKBMw/d1bs=
