@@ -84,14 +84,12 @@ func HealthWithConfig(config HealthCheckConfig) ginji.Middleware {
 				Status: "UP",
 				Time:   time.Now().UTC().Format(time.RFC3339),
 			}
-			c.JSON(ginji.StatusOK, status)
-			return nil
+			return c.JSON(ginji.StatusOK, status)
 		}
 
 		// Readiness probe - checks if the app is ready to serve traffic
 		if !config.DisableReadiness && path == config.ReadinessPath {
-			handleReadiness(c, config)
-			return nil
+			return handleReadiness(c, config)
 		}
 
 		return c.Next()
@@ -99,15 +97,14 @@ func HealthWithConfig(config HealthCheckConfig) ginji.Middleware {
 }
 
 // handleReadiness handles the readiness probe request.
-func handleReadiness(c *ginji.Context, config HealthCheckConfig) {
+func handleReadiness(c *ginji.Context, config HealthCheckConfig) error {
 	if len(config.Checkers) == 0 {
 		// No checkers configured, assume ready
 		status := HealthStatus{
 			Status: "UP",
 			Time:   time.Now().UTC().Format(time.RFC3339),
 		}
-		c.JSON(ginji.StatusOK, status)
-		return
+		return c.JSON(ginji.StatusOK, status)
 	}
 
 	// Run all health checkers with timeout
@@ -172,11 +169,10 @@ func handleReadiness(c *ginji.Context, config HealthCheckConfig) {
 
 	if allHealthy {
 		status.Status = "UP"
-		c.JSON(ginji.StatusOK, status)
-	} else {
-		status.Status = "DOWN"
-		c.JSON(ginji.StatusServiceUnavailable, status)
+		return c.JSON(ginji.StatusOK, status)
 	}
+	status.Status = "DOWN"
+	return c.JSON(ginji.StatusServiceUnavailable, status)
 }
 
 // AddHealthChecker adds a health checker to the configuration.

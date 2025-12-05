@@ -136,7 +136,7 @@ func TimeoutWithConfig(config TimeoutConfig) ginji.Middleware {
 				_ = recover()
 			}()
 
-			cp.Next()
+			_ = cp.Next()
 			close(done)
 		}()
 
